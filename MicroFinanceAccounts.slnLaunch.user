@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "MFAccountsAPI\\MFAccountsRentAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "MFPublicAccountsAPI\\MFPublicRentAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ConnectionHandler\\ConnectionHandler.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
