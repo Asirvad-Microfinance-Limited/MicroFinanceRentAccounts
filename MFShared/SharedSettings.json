@@ -1,0 +1,29 @@
+{
+"MFAccountsAPIUrl": "http://localhost:60612/",
+"MFAccountsRentAPIUrl": "http://localhost:60612/",
+
+"MFTreasuryAPIUrl": "https://localhost:7012/",
+ "MFReportsAPIUrl": "https://uatbackend.asirvad.com/AccountsAPI/NewMFReportsAPI/",
+//"MFAccountsAPIUrl": "https://uatbackend.asirvad.com/AccountsAPI/NewMFAccountsAPI/",
+  
+  //---- MACOM ----
+  //"MongoDbName": "AMFL_DB",
+  //"MongoDbPasword": "evzHB26jWq+cQGjslpJWYw==",
+  //"MongoUsername": "amfl1",
+  //"MongoAddress": "10.192.5.34"
+
+  
+  //"MongoAddress": "mongodb://rootuat:root223uat@10.150.2.3",
+
+
+//---- Live UAT ----
+  "MongoDbName": "AMFL_UATDB",
+  "MongoDbPasword": "T116wkebe18ke8fydgKz3w==",
+  "MongoUsername": "amfl1",
+  //"MongoAddress": "10.150.2.3",
+  //"MongoAddress": "mongodb://rootuat:root223uat@10.150.2.3",
+"MongoAddress": "mongodb://rootuat:root223uat@mdc-amlmguat-01.asirvad.com:27017/?replicaSet=asirvaduat&tls=true&tlsCAFile=C:\\ca.pem"
+
+
+
+}

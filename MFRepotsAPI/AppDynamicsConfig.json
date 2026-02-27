@@ -1,0 +1,15 @@
+{
+  "controller": {
+    "host": "macom.saas.appdynamics.com",
+    "port": 80,
+    "account": "macom",
+    "password": "lli8izrwuufi",
+    "ssl": false,
+    "enable_tls12": false
+  },
+  "application": {
+    "name": "LMS-PRODUCTION",
+    "tier": "MFReportsAPI",
+    "node": "web-node"
+  }
+}
