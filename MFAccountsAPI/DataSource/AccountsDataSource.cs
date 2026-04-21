@@ -1275,6 +1275,52 @@ namespace MFAccountsRentAPI.DataSource
 
         #endregion
 
+        #region RentHostelQueries
+
+        public RentHostelQueriesResponse RentHostelQueries(RentHostelQueriesRequest request)
+        {
+            RentHostelQueriesResponse PQR = new RentHostelQueriesResponse();
+            OracleBaseMethodResponse OBMRS = new OracleBaseMethodResponse();
+
+            OracleParameter[] parameters = new OracleParameter[5];
+            parameters[0] = new OracleParameter("p_Flag", OracleDbType.Varchar2);
+            parameters[0].Direction = ParameterDirection.Input;
+            parameters[0].Value = request.Flag;
+
+            parameters[1] = new OracleParameter("p_pageVal", OracleDbType.Varchar2);
+            parameters[1].Direction = ParameterDirection.Input;
+            parameters[1].Value = request.PagVal;
+
+            parameters[2] = new OracleParameter("p_ParVal", OracleDbType.Varchar2);
+            parameters[2].Direction = ParameterDirection.Input;
+            parameters[2].Value = request.ParVal;
+
+            parameters[3] = new OracleParameter("P_ParVal1", OracleDbType.Varchar2);
+            parameters[3].Direction = ParameterDirection.Input;
+            parameters[3].Value = request.ParVal1;
+
+            parameters[4] = new OracleParameter("QRY_RESULT", OracleDbType.RefCursor);
+            parameters[4].Direction = ParameterDirection.Output;
+
+            OBMRS.parameters = parameters;
+            OBMRS.query = "proc_rent_hostel_queries";
+
+            PQR.QueryResult = new OracleDBAccessHelper().GetRecords<RentHostelData>(OBMRS.query, OBMRS.parameters);
+
+            if (PQR.QueryResult.Count > 0)
+            {
+                PQR.isDataAvailable = true;
+                PQR.Message = "Success";
+            }
+            else
+            {
+                PQR.isDataAvailable = false;
+                PQR.Message = "Failed";
+            }
+            return PQR;
+        }
+        #endregion
+
     }
 }
 

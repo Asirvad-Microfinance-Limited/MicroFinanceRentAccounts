@@ -370,5 +370,30 @@ namespace MFAccountsRentAPI.Controllers
 
         #endregion
 
+        #region RentHostelQueries 
+        /// <summary>
+        /// API Number : PROC_BRANCH_CASH_POSITION
+        /// Created on : 25-Sep-2021
+        /// Created By : 100367
+        /// Description: Branch Cash Position
+        /// Modify Date:
+        /// Modify By  : 
+        /// Description:
+        /// </summary>
+        [HttpPost("RentHostelQueries")]
+        public ActionResult<Response<RentHostelQueriesResponse>> RentHostelQueries([FromBody] RentHostelQueriesRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                return AccountsBLL.Instance.RentHostelQueries(request);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        #endregion
+
     }
 }

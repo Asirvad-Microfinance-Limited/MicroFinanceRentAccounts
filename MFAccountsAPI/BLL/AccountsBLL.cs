@@ -603,5 +603,40 @@ namespace MFAccountsRentAPI.BLL
             return response;
         }
         #endregion
+
+        #region RentHostelQueries
+        public Response<RentHostelQueriesResponse> RentHostelQueries(RentHostelQueriesRequest request)
+        {
+            RentHostelQueriesResponse RentHostelQueriesResponse = new RentHostelQueriesResponse();
+            Response<RentHostelQueriesResponse> response = new Response<RentHostelQueriesResponse>();
+            try
+            {
+                RentHostelQueriesResponse = new AccountsDataSource().RentHostelQueries(request);
+
+                if (RentHostelQueriesResponse.isDataAvailable)
+                {
+                    response.Data = RentHostelQueriesResponse;
+                    response.status = ResponseTypeContants.SUCCESS;
+                    response.apiStatus = ApiStatusConstants.COMPLETED;
+                    response.responseMsg = ResponseTypeContants.SUCCESS;
+                }
+                else
+                {
+                    response.status = ResponseTypeContants.FAIL;
+                    response.apiStatus = ApiStatusConstants.COMPLETED;
+                    response.responseMsg = "No data found";
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception exception = ex;
+                response.status = "Exception";
+                response.responseMsg = "Internal Server Error";
+                response.SetExceptionError(ex.Message);
+            }
+
+            return response;
+        }
+        #endregion
     }
 }

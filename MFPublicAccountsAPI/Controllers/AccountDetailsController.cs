@@ -1498,6 +1498,117 @@ namespace MFPublicRentAPI.Controllers
         }
 
         #endregion
+
+        #region RentHostelQueries
+        /// <summary>
+        /// API Number : proc_payrat_queries
+        /// Created on : 30-Jul-2021
+        /// Created By : 100450
+        /// Description: Payrat Queries
+        /// Modify Date:
+        /// Modify By  : 
+        /// Description:
+        /// </summary>
+        [HttpPost("RentHostelQueries")]
+        public ActionResult<Response<RentHostelQueriesResponse>> RentHostelQueries([FromBody] RentHostelQueriesRequest request)
+        {
+
+            Response<RentHostelQueriesResponse> response = new Response<RentHostelQueriesResponse>();
+
+            if (ModelState.IsValid)
+
+            {
+                try
+                {
+                    string authHeader = string.Empty;
+                    //string DecStrs = JsonConvert.SerializeObject(Request.Headers.TryGetValue("Authorization", out StringValues authToken));
+                    //string DecStrss = JsonConvert.SerializeObject(Request.Headers.TryGetValue("Authorization", out StringValues authToken));
+                    if (Request.Headers.TryGetValue("Authorization", out StringValues authToken))
+                    {
+
+
+                        authHeader = authToken.First();
+                        var result = new ConnectionHandler.Authorization(authHeader);
+
+                        if (result.Status == "0")
+                        {
+                            response.status = ResponseTypeContants.AUTHERROR;
+                            response.apiStatus = ApiStatusConstants.NOT_COMPLETED;
+                            response.responseMsg = result.Message;
+                            return response;
+                        }
+                        string DecStr = new RequestEncryption().APIDecryptionAES(request.encryptedRqstStr);
+                        request = JsonConvert.DeserializeObject<RentHostelQueriesRequest>(DecStr);
+                        PublicConfigManager appConfigManager = new PublicConfigManager();
+                        UserSessionRequest AuthReq = new UserSessionRequest();
+                        AuthReq.typeID = request.typeID;
+                        AuthReq.userID = request.userID;
+                        AuthReq.branchID = request.branchID;
+
+
+                        var AuthRes = new ApiManager().InvokePostHttpClient<Response<UserSessionResponse>, UserSessionRequest>(AuthReq, appConfigManager.getaccountsRentApiUrl + "api/accounts/UserSession", authHeader).Item1;
+                        if (AuthRes.status == "SUCCESS")
+                        {
+
+
+                            response = new ApiManager().InvokePostHttpClient<Response<RentHostelQueriesResponse>, RentHostelQueriesRequest>(request, appConfigManager.getaccountsRentApiUrl + "api/accounts/RentHostelQueries", authHeader).Item1;
+                            if (response.status == "SUCCESS")
+                            {
+                                response.Data.token = AuthRes.Data.tokenId;
+                                string EncStr = new RequestEncryption().APIEncryptionAES(JsonConvert.SerializeObject(response.Data));
+                                response.Data = new RentHostelQueriesResponse();
+                                response.Data.encryptedResStr = EncStr;
+                            }
+                            //return response;
+                            else
+                            {
+                                response.status = "FAILED";
+
+                            }
+
+                        }
+                        else
+                        {
+                            response.status = "FAILED";
+                            response.responseMsg = AuthRes.responseMsg;
+
+                        }
+                        //response = new ApiManager().InvokePostHttpClient<Response<PayratQueryResponse>, PayratQueryRequest>(request, appConfigManager.getaccountsApiUrl + "api/accounts/PayratQueries", authHeader).Item1;
+                        //response.Data.token = AuthRes.Data.tokenId;
+                    }
+
+
+                    //string DecStr = new RequestEncryption().APIDecryptionAES(request.encryptedRqstStr);
+                    //request = JsonConvert.DeserializeObject<PayratQueryRequest>(DecStr);
+
+                    //response = new ApiManager().InvokePostHttpClient<Response<PayratQueryResponse>, PayratQueryRequest>(request, new AppConfigManager().getBaseUrl + "api/accounts/PayratQueries", authHeader).Item1;
+                    //if (response.status == "SUCCESS")
+                    //{
+
+                    //    string EncStr = new RequestEncryption().APIEncryptionAES(JsonConvert.SerializeObject(response.Data));
+                    //    response.Data = new PayratQueryResponse();
+                    //    response.Data.encryptedResStr = EncStr;
+                    //}
+                    ////return response;
+
+                }
+                catch (Exception ex)
+                {
+                    Exception exception = ex;
+                    response.status = "Exception";
+                    response.responseMsg = "Internal Server Error";
+                    response.SetExceptionError(ex.Message);
+                }
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+            return response;
+        }
+
+        #endregion
     }
 }
 
